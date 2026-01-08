@@ -1,309 +1,434 @@
-# 🎵 Groove Master 3000 - Discord Music Bot
+# 🏗️ DachTimer - Arbeitszeiterfassungs-App für Dachdecker
 
-Ein hochperformanter Discord Music Bot mit persistentem UI, modularer Architektur und Enterprise-Grade Features.
+Moderne, mobile Arbeitszeiterfassungs- und Baustellendokumentations-App für Dachdecker mit KI-gestützter Spracheingabe.
 
-## ✨ Features
+## 📦 APK Build & Verteilung
 
-- **12 interaktive Buttons** - Vollständige Kontrolle über die Musik
-- **Multi-Plattform Support** - YouTube, SoundCloud, Bandcamp, Mixcloud, Vimeo
-- **Live Progress Bar** - Echtzeit-Updates alle 5 Sekunden
-- **Latency Display** - Zeigt Bot- und Voice-Latenz für Troubleshooting
-- **YouTube Link Display** - Direkter Zugriff auf aktuelle Song-URLs
-- **Intelligente Queue** - Bis zu 20 Songs mit Shuffle & Repeat
-- **Radio Mode** - Automatische ähnliche Songs
-- **Robuste Fehlerbehandlung** - Mit automatischen Reconnects
-- **Thread Safety** - Race Condition Prevention mit Locks
-- **Optimiertes Caching** - Schnelle Downloads, keine Duplikate
-- **Strukturiertes Logging** - JSON Format für Monitoring
-- **Input Validation** - URL Whitelist & Sanitization
-- **Rate Limiting** - Schutz vor Spam
-- **Automatisches Queue-Backup** - Persistence alle 10 Minuten
+Die App kann als standalone APK gebaut und an Kollegen verteilt werden - ohne Metro-Bundler und PC-Verbindung!
 
-## 📋 Installation
+### 🚀 Schnellstart für APK-Build
+1. **Eingabeaufforderung öffnen** (Windows + R → cmd)
+2. **In Projektordner wechseln:** `cd c:\DachTimerApp`
+3. **EAS initialisieren:** `npx eas-cli@latest init --id b9b80cf0-121c-4799-ae4a-f3edfa758638`
+4. **APK bauen:** `npx eas-cli@latest build --platform android --profile production`
+5. **10-20 Minuten warten** und APK herunterladen von [expo.dev](https://expo.dev)
 
-### Voraussetzungen
+### 📚 Dokumentation
+- **[SCHRITT_FÜR_SCHRITT.md](SCHRITT_FÜR_SCHRITT.md)** - Detaillierte Build-Anleitung für Nicht-Programmierer
+- **[GOOGLE_SPEECH_SETUP.md](GOOGLE_SPEECH_SETUP.md)** - Google Speech-to-Text Setup (Optional)
+- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Entwickler-Guide & Testing
+- **[TODO.md](TODO.md)** - Projektstatus & Roadmap
 
-- Python 3.10+
-- FFmpeg
-- Discord Bot Token
-- YouTube API Key (optional)
+### ✅ App Features
+- ✅ Funktioniert komplett offline (SQLite Datenbank)
+- ✅ Alle Features ohne Metro/PC nach Installation
+- ✅ Android Widget für Home Screen
+- ✅ Keine Server-Kosten
+- 📡 Internet nur für optionale KI-Features (Claude API)
 
-### Schritt-für-Schritt
+## 🚀 Hauptfeatures
 
+- ⏱️ **Zeiterfassung mit Widget**: Android Home-Screen Widget mit Start/Pause/Stop Buttons und Live-Timer
+- 🎤 **KI-gestützte Spracheingabe**: Automatische Extraktion von Arbeitsdaten via Claude API (Haiku 4.5 - schnellstes Modell)
+  - Versteht deutsche Dachdecker-Fachbegriffe
+  - Extrahiert Kunde, Adresse, Zeiten, Material, Mitarbeiter automatisch
+  - Manuelle Texteingabe als Alternative
+  - Extrem günstig: ~€0.005 pro Extraktion (~0,5 Cent)
+- 📊 **Dashboard & Analytics**: Umfassende Übersichten
+  - Tagesansicht mit Balkendiagramm (letzte 7 Tage)
+  - Wochenansicht (letzte 4 Wochen)
+  - Monatsansicht mit Liniendiagramm (12 Monate)
+  - Kundenstatistiken mit Kreisdiagramm
+  - Kalenderansicht mit Eintragsmarkierungen
+- 💰 **Gehaltsberechnung**: Stundenlohn konfigurierbar in Einstellungen
+- 📸 **Foto-Dokumentation**: Bis zu 10 Fotos pro Eintrag (Kamera & Galerie)
+- 📑 **Export & Sharing**:
+  - PDF-Reports mit professionellem Layout
+  - CSV-Export für Excel (deutsche Formatierung)
+  - Datenbank-Backup-Funktion
+- 🌙 **Dark Mode**: Vollständige Dark/Light Mode Unterstützung mit automatischer Systemerkennung
+- 📴 **Offline-fähig**: Vollständige Funktionalität ohne Internet (außer KI-Features)
+
+## 🛠️ Tech Stack
+
+- **Framework**: React Native 0.81.5 + Expo 54
+- **Sprache**: TypeScript 5.9
+- **UI Framework**: React 19 + React Native Paper 5.12
+- **Navigation**: Expo Router 6.0 (File-based Routing)
+- **Datenbank**: SQLite (expo-sqlite) mit Repository Pattern
+- **State Management**: Zustand 5.0
+- **KI-Integration**:
+  - Claude API Haiku 4.5 (Anthropic) - schnellstes & günstigstes Modell
+  - Zod-Validierung für robuste Type-Safety
+  - Spezialisierter Prompt für deutsche Dachdecker-Terminologie
+- **Charts & Visualisierung**: react-native-chart-kit, react-native-calendars
+- **Native Features**:
+  - Android Widget (Kotlin)
+  - Push Notifications
+  - Kamera & Galerie
+  - Haptisches Feedback
+
+## 📋 Voraussetzungen
+
+### Für Entwicklung
+- Node.js >= 18
+- npm (kommt mit Node.js)
+- Android Studio mit Android SDK (für Android-Entwicklung)
+- Android Emulator oder physisches Android-Gerät
+
+### Für APK-Build (Production)
+- Expo-Account (kostenlos auf [expo.dev](https://expo.dev))
+- Internet-Verbindung
+- Keine lokale Build-Umgebung nötig (EAS Build in der Cloud)
+
+## 🏁 Installation & Setup
+
+### 1. Repository klonen
 ```bash
-# Repository klonen
-git clone https://github.com/Pcf1337-hash/BOTNEUENEU.git
-cd BOTNEUENEU
-
-# Dependencies installieren
-pip install -r requirements.txt
-
-# FFmpeg installieren
-# Linux: sudo apt install ffmpeg
-# macOS: brew install ffmpeg
-# Windows: https://ffmpeg.org/download.html
-
-# .env Datei erstellen
-cat > .env << EOF
-DISCORD_BOT_TOKEN=dein_token_hier
-YOUTUBE_API_KEY=dein_key_hier
-EOF
-
-# Bot starten
-python3 main.py
+git clone <repository-url>
+cd DachTimerApp
 ```
 
-## 🎮 Befehle
-
-| Befehl | Aliases | Beschreibung |
-|--------|---------|-------------|
-| `!play <URL/Suche>` | `!p` | Song abspielen |
-| `!stop` | — | Bot stoppen & disconnecten |
-| `!panel` | — | Control Panel anzeigen |
-| `!voicereset` | `!vr` | Voice Connection resetten |
-| `!status` | — | Bot Status anzeigen |
-| `!help` | `!h` | Hilfe anzeigen |
-
-## 🎵 Unterstützte Plattformen
-
-| Plattform | Unterstützung | Features |
-|-----------|--------------|----------|
-| 🎵 **YouTube** | ✅ Vollständig | Videos, Musik, Livestreams* |
-| 🎧 **SoundCloud** | ✅ Vollständig | Tracks, Playlists |
-| 🎸 **Bandcamp** | ✅ Vollständig | Indie-Künstler, Albums |
-| 🎛️ **Mixcloud** | ✅ Vollständig | DJ Sets, Radio Shows |
-| 🎬 **Vimeo** | ✅ Vollständig | Audio-Extraktion |
-
-*Livestreams werden nicht unterstützt
-
-## 🎛️ Die 12 Buttons
-
-| Button | Funktion |
-|--------|----------|
-| ⏮️ | Vorheriger Song |
-| ⏯️ | Play/Pause |
-| ⏭️ | Skip |
-| 🔁 | Repeat-Modus (Off → 🔁 Playlist → 🔂 Track) |
-| 🔀 | Shuffle Queue |
-| 📻 | Radio Mode |
-| 🔊 | Lautstärke ändern |
-| ⏩ | Zu Zeit springen |
-| ➕ | Song hinzufügen |
-| 📋 | Queue anzeigen (mit YouTube Links) |
-| 🗑️ | Queue leeren |
-| ⏹️ | Stop & Disconnect |
-
-## 🏗️ Projektstruktur
-
-```
-BOTNEUENEU/
-├── main.py                 # Einstiegspunkt
-├── core/
-│   ├── __init__.py
-│   ├── bot.py              # Bot-Initialisierung & Setup
-│   └── config.py           # Konfiguration & Konstanten
-├── models/
-│   ├── __init__.py
-│   └── song.py             # Song & GuildMusicState Datenklassen
-├── managers/
-│   ├── __init__.py
-│   └── download.py         # Download-Manager mit Caching
-├── commands/
-│   ├── __init__.py
-│   ├── music.py            # Musik-Befehle & Logik
-│   ├── events.py           # Event-Handler (on_ready, on_voice_state_update)
-│   └── tasks.py            # Hintergrund-Tasks (Panel-Updates, Cleanup)
-├── ui/
-│   ├── __init__.py
-│   └── views.py            # UI-Komponenten (13 Buttons + 3 Modals)
-├── utils/
-│   ├── __init__.py
-│   ├── logging.py          # JSON Logging-System
-│   ├── validation.py       # Eingabe-Validierung & Sicherheit
-│   ├── performance.py      # Performance-Monitor & Rate-Limiter
-│   ├── youtube.py          # YouTube API-Integration
-│   └── helpers.py          # Hilfsfunktionen
-└── requirements.txt        # Python-Abhängigkeiten
-```
-
-## ⚙️ Konfiguration
-
-Bearbeite `core/config.py` für diese Einstellungen:
-
-```python
-QUEUE_LIMIT = 20              # Maximale Songs in der Queue
-UPDATE_INTERVAL = 5           # Panel-Update-Intervall (Sekunden)
-DOWNLOADS_DIR = "downloads"   # Download-Verzeichnis
-VOICE_TIMEOUT = 30            # Voice-Verbindungs-Timeout (Sekunden)
-```
-
-## 🔍 Protokollierung
-
-Der Bot erstellt automatisch Protokoll-Dateien:
-
-- **`music_bot.log`** - Alle Events im JSON-Format
-- **`music_bot_errors.log`** - Nur Fehler mit Stack Traces
-
-## 🔒 Sicherheit
-
-- ✅ URL-Whitelist (YouTube, SoundCloud, Bandcamp, Mixcloud, Vimeo)
-- ✅ Eingabe-Bereinigung (max. 2000 Zeichen für URLs, 200 für Suchanfragen)
-- ✅ Rate-Limiting pro Benutzer (konfigurierbar)
-- ✅ XSS/Injection-Schutz
-- ✅ API-Schlüssel in `.env` (nicht im Code)
-- ✅ Command-Injection-Schutz
-
-## 🚀 Deployment
-
-### Heroku
-
+### 2. Dependencies installieren
 ```bash
-# Procfile
-worker: python3 main.py
-
-# Buildpacks hinzufügen
-heroku buildpacks:add heroku/python
-heroku buildpacks:add https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest
-
-# Konfiguration setzen
-heroku config:set DISCORD_BOT_TOKEN=...
-heroku config:set YOUTUBE_API_KEY=...
+npm install --legacy-peer-deps
 ```
 
-### Docker
+### 3. API-Keys konfigurieren (Optional - nur für KI-Features)
 
-```dockerfile
-FROM python:3.10-slim
-RUN apt-get update && apt-get install -y ffmpeg
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["python3", "main.py"]
-```
+Die App funktioniert komplett offline. API-Keys sind nur für optionale KI-Features nötig:
 
-## 📦 Abhängigkeiten
+- **Claude API**: Für KI-gestützte Datenextraktion aus Spracheingaben
+  - Modell: Claude Haiku 4.5 (schnellstes & günstigstes)
+  - Kosten: ~€0.005 pro Extraktion (~0,5 Cent)
+  - Key wird sicher in der App gespeichert (Settings → Voice Input Tab)
+  - Setup: Direkt in der App unter "Voice Input" → API Key eingeben
 
-Hauptabhängigkeiten (siehe `requirements.txt`):
+- **Google Speech-to-Text** (Optional): Für Audio-zu-Text-Umwandlung
+  - Setup-Anleitung: [GOOGLE_SPEECH_SETUP.md](GOOGLE_SPEECH_SETUP.md)
+  - 60 Minuten/Monat kostenlos
 
-- `discord.py==2.4.0` - Discord API
-- `yt-dlp>=2024.12.13` - Video-Downloads
-- `PyNaCl>=1.5.0` - Voice-Unterstützung
-- `google-api-python-client>=2.149.0` - YouTube API
-- `python-dotenv>=1.0.1` - Umgebungsvariablen
-- `aiofiles>=23.2.1` - Asynchrone Datei-Operationen
-- `psutil>=6.1.0` - Performance-Überwachung
+### 4. App im Entwicklermodus testen
 
-## 🐛 Troubleshooting
-
-### Bot verbindet nicht zum Voice Channel
-- Stelle sicher, dass du in einem Voice Channel bist
-- Prüfe Bot-Berechtigungen (Voice Connect, Speak)
-- Versuche `!voicereset`
-
-### Kein Audio wird abgespielt
-- FFmpeg installiert? `ffmpeg -version`
-- FFmpeg im PATH? (Windows)
-- Prüfe `music_bot_errors.log`
-
-### Download-Fehler
-- Internetverbindung prüfen
-- Manche Videos sind regional gesperrt
-- Live-Streams werden nicht unterstützt
-- Bot versucht automatisch erneut (konfigurierbar)
-
-### YouTube API-Fehler
-- API-Schlüssel korrekt in `.env`?
-- API-Kontingent prüfen (1.000.000 Einheiten/Tag)
-- Bot funktioniert auch ohne API-Schlüssel (direkter Download)
-
-### ModuleNotFoundError
+**Empfohlene Methode (Windows):**
 ```bash
-# Stelle sicher, dass alle Abhängigkeiten installiert sind
-pip3 install -r requirements.txt
-
-# Bei Python-Versions-Warnung (Python 3.10)
-# Die Warnung wird automatisch unterdrückt, da Python 3.10 bis 2026 unterstützt wird
+# PowerShell-Skript ausführen (setzt automatisch JAVA_HOME und Android SDK)
+powershell -ExecutionPolicy Bypass -File "build-android.ps1"
 ```
 
-## 🔧 Entwicklung
+**Manuelle Methode:**
+```bash
+# Terminal 1: Metro Bundler starten
+npx expo start
 
-### Code-Struktur
+# Terminal 2: App auf Android Emulator installieren
+set JAVA_HOME=C:\Program Files\Android\Android Studio\jbr
+set ANDROID_HOME=C:\Users\Administrator\AppData\Local\Android\Sdk
+npx expo run:android
+```
 
-- **Modulare Architektur** - Klare Trennung der Zuständigkeiten
-- **Async/Await** - Performante I/O-Operationen
-- **Thread-Safe** - Locks für Queue-Operationen
-- **Fehlerbehandlung** - Umfassende Exception-Behandlung
-- **Type Hints** - Bessere IDE-Unterstützung
+Detaillierte Anleitung: [DEVELOPMENT.md](DEVELOPMENT.md)
 
-### Hintergrund-Tasks
+## 📱 Verwendung
 
-1. **auto_update_panel** - Aktualisiert Control Panel alle 5s
-2. **cleanup_task** - Löscht alte Downloads jede Stunde
-3. **queue_backup_task** - Speichert Queue alle 10 Minuten
-4. **voice_recovery_task** - Verbindungswiederherstellung bei Abbruch alle 30s
+### ⏱️ Zeiterfassung mit Widget
+1. **Widget hinzufügen**: Auf Home Screen lange drücken → Widgets → DachTimer
+2. **Timer starten**: Direkt vom Widget oder im Timer-Tab
+3. **Pausen**: "Pause" Button (Widget oder App)
+4. **Stoppen**: "Stop" Button → Eintrag wird automatisch gespeichert
+5. **Widget-Sync**: Widget und App synchronisieren sich automatisch
 
-### Event-Handler
+### 🎤 KI-gestützte Spracheingabe
+1. **Voice Input Tab** öffnen
+2. **Claude API Key** einrichten (einmalig in Settings)
+3. **Eingabemethode wählen**:
+   - **AUDIO**: Mikrofon-Button für Aufnahme
+   - **TEXT**: Manuelle Texteingabe
+4. **Arbeitsbericht sprechen/schreiben**:
+   ```
+   "Bei Frau Müller in der Hauptstraße 12, 32051 Herford von 8-12 Uhr,
+   30 Min Pause. Flicken geschweißt auf Flachdach. 2 Rollen PYE 2000 verwendet."
+   ```
+5. **KI verarbeitet** automatisch:
+   - Kunde, Adresse, Zeiten, Pausen
+   - Material mit Mengen
+   - Arbeitsbeschreibung
+   - Mitarbeiter
+6. **Review-Screen**: Alle Felder prüfen & anpassen
+7. **Speichern**
 
-- `on_ready` - Bot-Initialisierung & Task-Start
-- `on_guild_remove` - Aufräumen bei Server-Entfernung
-- `on_voice_state_update` - Auto-Disconnect wenn Bot alleine
-- `on_command_error` - Globale Fehlerbehandlung
+### 📊 Analytics & Reports
+- **Tag**: Balkendiagramm der letzten 7 Tage
+- **Woche**: Stundenübersicht der letzten 4 Wochen
+- **Monat**: Jahresübersicht mit Liniendiagramm
+- **Kunden**: Top 5 Kunden mit Kreisdiagramm
+- **Kalender**: Monatsansicht mit Eintragsmarkierungen
+- **Export**: PDF/CSV via FAB-Button (unten rechts)
 
-## 🤝 Mitwirken
+### ⚙️ Einstellungen
+- Theme (Hell/Dunkel/Auto)
+- Stundenlohn für Kostenberechnung
+- Mitarbeiter-Verwaltung
+- Standard-Pausenlänge
+- Benachrichtigungen
+- Datenbank-Backup
 
-Pull Requests sind willkommen! Für größere Änderungen bitte zuerst ein Issue öffnen.
+## 🗂️ Projektstruktur
 
-### Code-Stil
-- Folge PEP 8
-- Verwende Type Hints
-- Umfassende Docstrings
-- Fehlerbehandlung für alle async-Operationen
+```
+DachTimerApp/
+├── app/                           # Expo Router Screens (File-based Routing)
+│   ├── (tabs)/                   # Tab Navigation
+│   │   ├── dashboard.tsx         # Dashboard mit Übersicht
+│   │   ├── timer.tsx             # Timer-Funktionalität
+│   │   ├── voice-input.tsx       # KI-Spracheingabe
+│   │   ├── analytics.tsx         # Charts & Statistiken
+│   │   └── settings.tsx          # App-Einstellungen
+│   ├── entries/                  # Zeiteinträge-Verwaltung
+│   │   ├── index.tsx             # Liste aller Einträge
+│   │   ├── new.tsx               # Neuer Eintrag
+│   │   ├── [id].tsx              # Detail-Ansicht
+│   │   └── edit/[id].tsx         # Bearbeiten
+│   ├── review-voice-input.tsx    # Review KI-extrahierter Daten
+│   └── _layout.tsx               # Root Layout mit Theme
+├── src/
+│   ├── components/               # Wiederverwendbare UI-Komponenten
+│   │   ├── timer/                # Timer-Komponenten
+│   │   ├── dashboard/            # Dashboard-Cards
+│   │   ├── analytics/            # Charts (Daily, Weekly, Monthly, etc.)
+│   │   ├── photos/               # Foto-Verwaltung
+│   │   └── export/               # Export-Modal
+│   ├── database/
+│   │   ├── schema.ts             # SQLite-Schema (4 Tabellen)
+│   │   ├── connection.ts         # DB-Verbindung
+│   │   └── repositories/         # Repository Pattern für DB-Zugriff
+│   ├── services/
+│   │   ├── claudeService.ts      # Claude API Integration (optimiert)
+│   │   ├── photoService.ts       # Foto-Verwaltung
+│   │   ├── exportService.ts      # PDF/CSV-Export
+│   │   ├── backupService.ts      # DB-Backup
+│   │   └── notificationService.ts # Push Notifications
+│   ├── store/                    # Zustand State Management
+│   │   ├── timerStore.ts         # Timer-State
+│   │   └── settingsStore.ts      # App-Einstellungen
+│   ├── types/                    # TypeScript Interfaces
+│   ├── constants/                # Theme & Config
+│   └── utils/                    # Helper Functions
+├── android/                      # Native Android Code
+│   └── app/src/main/
+│       ├── java/.../             # Widget (Kotlin)
+│       └── res/                  # Widget Layout & Resources
+└── assets/                       # Images, Icons, Fonts
+```
+
+## 🔧 Konfiguration
+
+### API-Keys
+API-Keys werden verschlüsselt gespeichert (expo-secure-store):
+- **Claude API**: Einrichten in Settings → Voice Input Tab
+  - Benötigt für KI-gestützte Datenextraktion
+  - Modell: Claude Haiku 4.5 (claude-haiku-4-5-20251001)
+  - Kosten: ~€0.005 pro Extraktion (~0,5 Cent)
+  - API Key erhalten unter: [console.anthropic.com](https://console.anthropic.com/)
+
+### Theme & Erscheinungsbild
+- **Dark Mode**: Automatisch basierend auf System-Einstellungen
+- **Manuelle Umschaltung**: Settings → Theme (Hell/Dunkel/Auto)
+- **Vollständige Dark Mode Unterstützung**: Alle Screens, Komponenten, Charts
+
+## 📦 Datenbank Schema
+
+Die App verwendet SQLite für lokale Datenspeicherung (komplett offline):
+
+### time_entries
+- **Basisdaten**: id, date, kunde, baustelle, adresse
+- **Zeiten**: startZeit, endZeit, pausenMinuten, arbeitsStunden
+- **Mitarbeiter**: mitarbeiter (JSON-Array)
+- **Arbeiten**: durchgefuehrteArbeiten, kundenhinweise, offeneAufgaben
+- **Medien**: photos (JSON-Array von Pfaden)
+- **Metadaten**: createdAt, updatedAt
+
+### materials
+- **Material-Info**: beschreibung, menge, einheit, kosten
+- **Verknüpfung**: timeEntryId (Foreign Key mit CASCADE)
+
+### settings
+- **Key-Value Store**: key, value
+- **Speichert**: API-Keys, Theme, Stundenlohn, Mitarbeiter, etc.
+
+### construction_sites
+- **Baustellen-Verwaltung**: name, lastUsed
+- **Für Autocomplete** (zukünftig)
+
+## 🧪 Testing & Entwicklung
+
+### Android Emulator Testing (Empfohlen)
+
+**Voraussetzungen:**
+- Android Studio mit Android SDK installiert
+- Android Emulator läuft (z.B. Pixel 9 API 35)
+
+**Schnellstart:**
+```bash
+# PowerShell-Skript (empfohlen - setzt automatisch Umgebungsvariablen)
+powershell -ExecutionPolicy Bypass -File "build-android.ps1"
+```
+
+**App neu laden nach Code-Änderungen:**
+- **R** zweimal drücken (Reload)
+- **Ctrl+M** → "Reload" (Dev Menu)
+
+**Troubleshooting:**
+```bash
+# Port 8081 belegt
+taskkill //F //IM node.exe
+npx expo start --clear
+
+# Native Module geändert
+powershell -ExecutionPolicy Bypass -File "build-android.ps1"
+```
+
+**Details:** Siehe [DEVELOPMENT.md](DEVELOPMENT.md)
+
+### Claude API Testen
+
+Die App enthält eine umfassende Test-Suite für die Claude API Integration:
+
+```typescript
+import testSuite from '@services/__tests__/claudeService.test';
+
+// Alle Tests ausführen
+await testSuite.runAllTests();
+
+// Einzelnen Test ausführen
+await testSuite.runSingleTest(0);
+
+// Custom Text testen
+await testSuite.runCustomTest('Ihr Test-Text hier...');
+```
+
+**Details:** Siehe [CLAUDE_API_SETUP.md](CLAUDE_API_SETUP.md)
+
+## 📤 Export & Sharing
+
+### PDF-Export
+- **Professionelles Layout** mit Firmen-Header
+- **Zeitraum-Auswahl**: Heute, Woche, Monat, Benutzerdefiniert
+- **Detaillierte Tabelle**: Alle Zeiteinträge mit Material
+- **Zusammenfassung**: Gesamtstunden und Materialkosten
+- **Sharing**: Direkt per E-Mail, WhatsApp, etc.
+
+### CSV-Export
+- **Excel-kompatibel**: UTF-8 BOM, Semikolon-Separator
+- **Deutsche Formatierung**: Komma als Dezimaltrennzeichen
+- **Buchhaltungs-ready**: Datum, Kunde, Stunden, Kosten
+- **Zeitraum-Auswahl**: Flexibel konfigurierbar
+
+### Datenbank-Backup
+- **SQLite-Export**: Komplette Datenbank als .db-Datei
+- **Sicher teilen**: Via Sharing-Funktionalität
+- **Wiederherstellung**: Für zukünftige Versionen geplant
+
+## 🤝 Entwicklungshistorie & Status
+
+### Aktueller Stand: **~98% komplett** 🎉 (2026-01-08)
+
+Die DachTimerApp ist eine vollständig funktionsfähige Produktions-App mit allen geplanten Kernfeatures.
+
+### 🆕 Neueste Änderungen (2026-01-08)
+- 📝 README.md vollständig aktualisiert mit allen implementierten Features
+- 🔄 Claude API Modell korrekt dokumentiert (Haiku 4.5)
+- 💰 Korrekte Kostenangaben für KI-Features
+- 📚 Dokumentation vereinheitlicht und bereinigt
+
+### Abgeschlossene Entwicklungsphasen
+
+#### Phase 1-3: Grundlegende Infrastruktur ✅
+- React Native 0.81.5 + Expo 54 + TypeScript 5.9
+- Expo Router Navigation (5 Tabs)
+- SQLite-Datenbank mit Repository Pattern
+- Theme-System (Light/Dark Mode)
+- Timer-Funktionalität mit Zustand State Management
+- Push Notifications & Haptisches Feedback
+
+#### Phase 4-6: UI & Datenvisualisierung ✅
+- Dashboard mit Statistiken & Schnellaktionen
+- Zeiteinträge-Verwaltung (Liste, Detail, Bearbeiten)
+- Manuelle Eingabe mit Validierung
+- Analytics mit 5 Ansichten:
+  - Tagesansicht (Balkendiagramm)
+  - Wochenansicht (4 Wochen)
+  - Monatsansicht (Liniendiagramm, 12 Monate)
+  - Kundenstatistiken (Kreisdiagramm)
+  - Kalenderansicht mit Markierungen
+
+#### Phase 7: Foto-Dokumentation ✅
+- Kamera & Galerie-Integration
+- Max. 10 Fotos pro Eintrag
+- Vollbild-Ansicht & Thumbnail-Galerie
+- Automatische Speicherung im App-Verzeichnis
+
+#### Phase 9: KI-Integration (2026-01-07 OPTIMIERT) ✅
+- **Claude API Haiku 4.5** - schnellstes & günstigstes Modell
+  - Model ID: claude-haiku-4-5-20251001
+  - Kosten: ~€0.005 pro Extraktion (~0,5 Cent)
+- **Spezialisierter Prompt** für deutsche Dachdecker-Terminologie
+- **Robustes Error-Handling** mit detaillierten Fehlermeldungen
+- **Zod-Validierung** für Type-Safety
+- **Test-Suite** mit umfassenden Test-Cases
+- **Fachbegriffe-Support**: PYE, Schweißbahn, Bitumen, Flachdach, Steildach, etc.
+- Audio-Recording & manuelle Texteingabe
+- Review-Screen für KI-extrahierte Daten
+- API Key wird sicher in expo-secure-store gespeichert
+
+#### Phase 10: Einstellungen ✅
+- Theme-Auswahl (Hell/Dunkel/Auto)
+- Stundenlohn-Konfiguration
+- Mitarbeiter-Verwaltung
+- Benachrichtigungs-Einstellungen
+- Datenbank-Statistiken
+- "Alle Daten löschen" mit Bestätigung
+
+#### Phase 11: Export & Sharing ✅
+- **PDF-Export** mit professionellem Layout
+- **CSV-Export** für Excel (deutsche Formatierung)
+- **Datenbank-Backup** (.db-Datei)
+- Zeitraum-Auswahl (Heute, Woche, Monat, Custom)
+- Sharing-Funktionalität
+
+#### Phase 12: Android Widget (2026-01-04 - 2026-01-05) ✅
+- **Native Kotlin-Implementierung**
+- **Live-Timer** mit 1-Sekunden-Updates
+- **Widget-Steuerung**: Start/Pause/Stop Buttons
+- **Bidirektionale Synchronisation** Widget ↔ App
+- **React Native Bridge** für Kommunikation
+- **Modernes Design** mit Farbverlauf
+- Bug-Fixes: Rundungsfehler, Adressformatierung, Widget-Kommunikation
+
+#### Dark Mode (2026-01-04) ✅
+- Vollständige Dark Mode Unterstützung in allen Screens
+- `useThemeColors()` Hook für konsistente Theming
+- Separate Chart-Farbpaletten für Light/Dark
+- Alle hartcodierten Farben entfernt
+
+### Nächste Schritte (Optional)
+
+**Phase 13 - Erweiterte Features:**
+- Performance-Optimierungen
+- Infinite Scroll für lange Listen
+- Cloud-Sync (Firebase/Supabase)
+- Multi-Language Support
+
+Details in [TODO.md](TODO.md)
 
 ## 📄 Lizenz
 
-MIT License - siehe LICENSE Datei
+Private Projekt - Alle Rechte vorbehalten
 
-## 📞 Support
+## 🐛 Issues & Feedback
 
-Bei Problemen:
-1. Prüfe die Troubleshooting-Sektion
-2. Schaue in `music_bot.log` und `music_bot_errors.log`
-3. Erstelle ein GitHub Issue mit:
-   - Fehlermeldung
-   - Relevante Logs
-   - Schritte zur Reproduktion
-   - Python-Version (`python3 --version`)
-   - Betriebssystem & FFmpeg-Version
-
-## 🔄 Änderungshistorie
-
-### Aktuell (2025-12-26)
-- ✅ Feature: Drei-Status Repeat-Button (Off → 🔁 Playlist → 🔂 Track)
-- ✅ Verbesserung: Panel-Layout optimiert - 3 Reihen statt 4 für harmonische Darstellung
-- ✅ Verbesserung: Refresh-Button entfernt (automatische Updates machen ihn überflüssig)
-- ✅ Bugfix: Radio Mode Zuverlässigkeit verbessert
-- ✅ Update: Dependencies auf neueste Versionen aktualisiert (yt-dlp 2024.12.13, google-api 2.149.0)
-- ✅ Aufräumen: Überflüssige Dateien entfernt (start.bat, start.sh, MEGA_OPTIMIZATION_PROMPT.md)
-
-### Version 2025-12-26 (früher)
-- ✅ Feature: Multi-Plattform Support erweitert (Bandcamp, Mixcloud, Vimeo)
-- ✅ Feature: Latenz-Anzeige im Control Panel (Bot & Voice Latenz)
-- ✅ Feature: YouTube-Link-Anzeige in Queue-Ansicht
-- ✅ Feature: Stop-Button (⏹️) für schnellen Disconnect
-- ✅ Bugfix: Track-Seek überspringt nicht mehr die Queue
-- ✅ Bugfix: Korrekte Locks für alle State-Zugriffe (Race Condition Prevention)
-
-### Vorherige Version (2025-12-21)
-- ✅ Bugfix: Python-Versions-Warnung unterdrückt
-- ✅ Bugfix: Nicht existierende Modul-Imports entfernt (VoiceClientManager, EmbedFactory)
-- ✅ Refactoring: InputValidator für Sicherheit integriert
-- ✅ Refactoring: Befehle in music.py, events.py, tasks.py modularisiert
-- ✅ Großes Refactoring: Thread-Sicherheit & Race-Condition-Fixes
-- ✅ Komplette Umstrukturierung: Flache Modul-Hierarchie
-- ✅ Umfassende Fehlerbehandlung hinzugefügt
-- ✅ Queue-Persistenz implementiert
+Bei Problemen oder Verbesserungsvorschlägen bitte ein Issue erstellen.
 
 ---
 
-**Gemacht mit ❤️ für die Discord-Community**
+Entwickelt mit ❤️ für Dachdecker
